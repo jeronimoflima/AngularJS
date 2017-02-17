@@ -1,31 +1,65 @@
-angular.module("tarefas").controller("TarefaController",function(){
-	this.tarefa = {};
+(function(){
+	'use strict';
 	
-	this.tarefas = [];
+angular.module("tarefas").controller("TarefaController",Controller);
+Controller.$inject = ["lowercaseFilter"];
+
+function Controller(lc){
+	var self = this;
 	
-	this.novaTarefa = function(){
-		this.tarefa = {};
+	self.tarefa = {};
+	
+	self.tarefas = [];
+	
+	self.pesquisa = "";
+	
+	self.novaTarefa = function(){
+		self.tarefa = {};
 	};
 	
-	this.salvarTarefa = function(tarefa){
+	self.salvarTarefa = function(tarefa){
+		tarefa.descricao = lc(tarefa.descricao);
+		if(tarefa.id){
+			editarTarefa(tarefa)
+		}else{
+			incluirTarefa(tarefa)
+		}
+	};
+	
+	function incluirTarefa(tarefa){
 		tarefa.id = new Date().getTime();
-		this.tarefas.push(tarefa);
-		this.novaTarefa();
-	};
+		self.tarefas.push(tarefa);
+		self.novaTarefa();
+	}
+	
+	function editarTarefa(tarefa){
+		var pos = -1;
+		angular.forEach(self.tarefas,function(item,index){
+			if(tarefa.id == item.id){
+				pos = index;
+			}
+		});
+		if(pos > -1){
+			self.tarefas.splice(pos,1,self.tarefa);
+			self.novaTarefa();
+		}
+	}
 	
 	this.removerTarefa = function(tarefa){
 		var pos = -1;
-		angular.forEach(this.tarefas,function(item,index){
+		angular.forEach(self.tarefas,function(item,index){
 			if(tarefa.id == item.id){
 				pos = index;
 			}
 	});
 		if(pos > -1){
-			this.tarefas.splice(pos,1);
+			self.tarefas.splice(pos,1);
 			}
 		}
 		
-		this.selecionarTarefa = function(tarefa){
-			this.tarefa = tarefa;
+	self.selecionarTarefa = function(tarefa){
+		self.tarefa = angular.copy(tarefa);
 		}
-});
+}
+
+}) ();

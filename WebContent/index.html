@@ -17,7 +17,7 @@
 					<h2>Tarefa</h2>
 				</div>
 				<div class="panel-body">
-				{{controller.tarefa}}
+				<pre>{{controller.tarefa | json}}</pre>
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="resumo">Resumo</label>
 						<div class="col-sm-9">
@@ -33,7 +33,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="prazo">Prazo</label>
 						<div class="col-sm-9">
-							<input id="prazo" name="prazo" class="form-control" ng-model="controller.tarefa.prazo">
+							<input id="prazo" name="prazo" class="form-control" date-format ng-model="controller.tarefa.prazo">
 						</div>
 					</div>
 					<div class="form-group">
@@ -56,7 +56,7 @@
 	</form>
 	<div class="col-sm-4 col-sm-offset-8">
 		<div class="input-group">
-			<input class="form-control">
+			<input class="form-control" ng-model="controller.pesquisa">
 			<div class="input-group-btn">
 				<button type="button" class="btn btn-default">Pesquisar</button>
 				<button type="button" class="btn btn-primary">Novo</button>
@@ -68,18 +68,20 @@
 		<thead>
 			<tr>
 				<th>Resumo</th>
+				<th>Descrição</th>
 				<th>Prazo</th>
 				<th>Situação</th>
 				<th>Opções</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="tarefa in controller.tarefas">
-				<td>{{tarefa.resumo}}</td>
+			<tr ng-repeat="tarefa in controller.tarefas | filter:controller.pesquisa">
+				<td>{{tarefa.resumo | uppercase}}</td>
+				<td>{{tarefa.descricao | capitalize}}</td>
 				<td>{{tarefa.prazo}}</td>
 				<td>{{tarefa.situacao}}</td>
 				<td>
-					<button type="button" class="btn btn-warning" ng-click="controler.selecionarTarefa(tarefa)">Editar</button>
+					<button type="button" class="btn btn-warning" ng-click="controller.selecionarTarefa(tarefa)">Editar</button>
 					<button type="button" class="btn btn-danger" ng-click="controller.removerTarefa(tarefa)">Remover</button>
 				</td>
 			</tr>
@@ -89,15 +91,16 @@
 </div>
 
 
-	<script type="text/javascript"
-		src="node_modules/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript"
-		src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script type="text/javascript"
-		src="node_modules/angular/angular.min.js"></script>
-		<!-- modulos -->
-		<script type="text/javascript" src="js/config/app.js"></script>
-		<!-- controllers -->
-		<script type="text/javascript" src="js/tarefa/tarefa-controller.js"></script>
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<!-- modulos -->
+	<script type="text/javascript" src="js/config/app.js"></script>
+	<!-- filters -->
+	<script type="text/javascript" src="js/filter/capitalize-filter.js"></script>
+	<!-- directives -->
+	<script type="text/javascript" src="js/directive/date-format.directive.js"></script>
+	<!-- controllers -->
+	<script type="text/javascript" src="js/tarefa/tarefa-controller.js"></script>
 </body>
 </html>

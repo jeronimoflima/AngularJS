@@ -1,1 +1,5 @@
-angular.module("tarefas",[]);
+(function(){
+	'use strict';
+
+	angular.module("tarefas",[]);
+}) ();

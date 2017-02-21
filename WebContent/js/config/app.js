@@ -1,5 +1,5 @@
 (function(){
 	'use strict';
 
-	angular.module("tarefas",[]);
+	angular.module("tarefas",["ngMessages"]);
 }) ();

@@ -10,45 +10,71 @@
 </head>
 <body>
 	<div ng-controller="TarefaController as controller">
-	<form class="form-horizontal">
+	<form name="meuFormulario" class="form-horizontal" ng-submit="controller.salvarTarefa(controller.tarefa)">
 		<div class="col-sm-6 col-sm-offset-3">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h2>Tarefa</h2>
 				</div>
 				<div class="panel-body">
-				<pre>{{controller.tarefa | json}}</pre>
-					<div class="form-group">
+				<json data="meuFormulario"></json>
+					<div class="form-group"
+						ng-class="{'has-error': meuFormulario.resumo.$invalid && meuFormulario.resumo.$dirty,
+								 'has-success': meuFormulario.resumo.$valid && meuFormulario.resumo.$dirty}">
 						<label class="control-label col-sm-3" for="resumo">Resumo</label>
 						<div class="col-sm-9">
-							<input id="resumo" name="resumo" class="form-control" ng-model="controller.tarefa.resumo">
+							<input id="resumo" name="resumo" class="form-control" ng-model="controller.tarefa.resumo" required
+								ng-minlength="3" ng-maxlength="10">
+							<div ng-messages="meuFormulario.resumo.$error" class="help-block" ng-if="meuFormulario.resumo.$dirty">
+								<div ng-message="required">Campo resumo deve ser informado</div>
+								<div ng-message="minlength">Campo resumo deve conter no mínimo 3 caracteres</div>
+								<div ng-message="maxlength">Campo resumo deve conter no máximo 10 caracteres</div>
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group"
+						ng-class="{'has-error': meuFormulario.descricao.$invalid && meuFormulario.descricao.$dirty,
+									'has-success': meuFormulario.descricao.$valid && meuFormulario.descricao.$dirty}">
 						<label class="control-label col-sm-3" for="descricao">Descrição</label>
 						<div class="col-sm-9">
-							<textarea id="descricao" name="descricao" class="form-control" ng-model="controller.tarefa.descricao" rows="6"></textarea>
+							<textarea id="descricao" name="descricao" class="form-control" ng-model="controller.tarefa.descricao" rows="6" required
+								ng-minlength="10" ng-maxlength="50"></textarea>
+								<div ng-messages="meuFormulario.descricao.$error" class="help-block" ng-if="meuFormulario.descricao.$dirty">
+								<div ng-message="required">Campo descrição deve ser informado</div>
+								<div ng-message="minlength">Campo descrição deve conter no mínimo 10 caracteres</div>
+								<div ng-message="maxlength">Campo descrição deve conter no máximo 50 caracteres</div>
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group"
+						ng-class="{'has-error': meuFormulario.prazo.$invalid && meuFormulario.prazo.$dirty,
+									'has-success': meuFormulario.prazo.$valid && meuFormulario.prazo.$dirty}">
 						<label class="control-label col-sm-3" for="prazo">Prazo</label>
 						<div class="col-sm-9">
-							<input id="prazo" name="prazo" class="form-control" date-format ng-model="controller.tarefa.prazo">
+							<input id="prazo" name="prazo" class="form-control" date-format ng-model="controller.tarefa.prazo" required>
+								<div ng-messages="meuFormulario.prazo.$error" class="help-block" ng-if="meuFormulario.prazo.$dirty">
+								<div ng-message="required">Campo prazo deve ser informado</div>
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group"
+						ng-class="{'has-error': meuFormulario.situacao.$invalid && meuFormulario.situacao.$dirty,
+								 'has-success': meuFormulario.situacao.$valid && meuFormulario.situacao.$dirty}">
 						<label class="control-label col-sm-3" for="situacao">Situação</label>
 						<div class="col-sm-9">
-							<select id="situacao" name="situacao" class="form-control" ng-model="controller.tarefa.situacao">
+							<select id="situacao" name="situacao" class="form-control" ng-model="controller.tarefa.situacao" required>
 							<option value="">Selecione...</option>
 							<option value="Pendente">Pendente</option>
 							<option value="Concluído">Concluído</option>
 							</select>
+								<div ng-messages="meuFormulario.situacao.$error" class="help-block" ng-if="meuFormulario.situacao.$dirty">
+								<div ng-message="required">Campo situação deve ser selecionado</div>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="panel-footer text-right">
-					<button type="button" class="btn btn-primary" ng-click="controller.salvarTarefa(controller.tarefa)">Salvar</button>
+					<button type="submit" class="btn btn-primary" ng-disabled="meuFormulario.$invalid">Salvar</button>
 					<button type="button" class="btn btn-default" ng-click="controller.novaTarefa()">Cancelar</button>
 				</div>
 			</div>
@@ -78,7 +104,7 @@
 			<tr ng-repeat="tarefa in controller.tarefas | filter:controller.pesquisa">
 				<td>{{tarefa.resumo | uppercase}}</td>
 				<td>{{tarefa.descricao | capitalize}}</td>
-				<td>{{tarefa.prazo}}</td>
+				<td>{{tarefa.prazo | date:'dd/MM/yyyy'}}</td>
 				<td>{{tarefa.situacao}}</td>
 				<td>
 					<button type="button" class="btn btn-warning" ng-click="controller.selecionarTarefa(tarefa)">Editar</button>
@@ -94,12 +120,14 @@
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-messages/angular-messages.min.js"></script>
 	<!-- modulos -->
 	<script type="text/javascript" src="js/config/app.js"></script>
 	<!-- filters -->
 	<script type="text/javascript" src="js/filter/capitalize-filter.js"></script>
 	<!-- directives -->
 	<script type="text/javascript" src="js/directive/date-format.directive.js"></script>
+	<script type="text/javascript" src="js/directive/json.directive.js"></script>
 	<!-- controllers -->
 	<script type="text/javascript" src="js/tarefa/tarefa-controller.js"></script>
 </body>

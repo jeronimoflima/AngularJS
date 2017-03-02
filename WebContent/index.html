@@ -2,10 +2,9 @@
 <html ng-app="tarefas">
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" type="text/css"
-	href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"
-	href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="node_modules/angularjs-toaster/toaster.min.css"> 
 <title>Tarefas</title>
 </head>
 <body>
@@ -84,7 +83,7 @@
 		<div class="input-group">
 			<input class="form-control" ng-model="controller.pesquisa">
 			<div class="input-group-btn">
-				<button type="button" class="btn btn-default">Pesquisar</button>
+				<button type="button" class="btn btn-default" ng-click="controller.pesquisar();">Pesquisar</button>
 				<button type="button" class="btn btn-primary">Novo</button>
 			</div>
 		</div>
@@ -101,7 +100,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="tarefa in controller.tarefas | filter:controller.pesquisa">
+			<tr ng-repeat="tarefa in controller.tarefas">
 				<td>{{tarefa.resumo | uppercase}}</td>
 				<td>{{tarefa.descricao | capitalize}}</td>
 				<td>{{tarefa.prazo | date:'dd/MM/yyyy'}}</td>
@@ -115,16 +114,19 @@
 	</table>
 </div>
 </div>
+<toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
 
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-messages/angular-messages.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-resource/angular-resource.min.js"></script>
-	<script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
-	<script type="text/javascript" src="node_modules/angularjs-toaster/angularjs-toaster.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
+	<script type="text/javascript" src="node_modules/angularjs-toaster/toaster.min.js"></script>
 	<!-- modulos -->
 	<script type="text/javascript" src="js/config/app.js"></script>
+	<!-- factories -->
+	<script type="text/javascript" src="js/factory/tarefa-factory.js"></script>
 	<!-- filters -->
 	<script type="text/javascript" src="js/filter/capitalize-filter.js"></script>
 	<!-- directives -->
@@ -132,5 +134,6 @@
 	<script type="text/javascript" src="js/directive/json.directive.js"></script>
 	<!-- controllers -->
 	<script type="text/javascript" src="js/tarefa/tarefa-controller.js"></script>
+
 </body>
 </html>
